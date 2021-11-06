@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<style>
+  html, body {
+    padding: 0;
+    margin: 0;
+    background: #eee;
+  }
+  .konvajs-content {
+    background: white;
+  }
+  .titlebar {
+    height: 60px;
+    box-shadow: 0px 0px 5px grey;
+    position: relative;
+    z-index: 1;
+    background-color: white;
+  }
+  .titlebar > img {
+    height: 48px;
+    padding: 6px;
+  }
+  .titlebar h1 {
+    position: absolute;
+    left: 60px;
+    top: 2px;
+    margin: 0;
+  }
+  .titlebar h3 {
+    position: absolute;
+    left: 60px;
+    bottom: 2px;
+    margin: 0;
+    color: gray;
+  }
+  .titlebar ul {
+    position: absolute;
+    bottom: 0;
+    right: 10px;
+    list-style: none;
+    margin: 0;
+  }
+  .titlebar ul li {
+    display: inline;
+  }
+  .titlebar ul img {
+    height: 32px;
+  }
+  .titlebar ul span {
+    text-align: center;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    padding: 2px 10px;
+    padding-top: 8px;
+    min-width: 4em;
+    cursor: pointer;
+  }
+  .titlebar ul li.checked span {
+    background: #eee linear-gradient(90deg, #ddd, white 20%, white 80%, #ddd);
+  }
+  .titlebar ul span:hover {
+    background: linear-gradient(transparent,#b1dcff);
+    color: red;
+  }
+  .titlebar ul li.checked span:hover {
+    background: #eee linear-gradient(90deg, #b1dcff, white 20%, white 80%, #b1dcff);
+  }
+  .titlebar ul li.checked ul {
+    background: white;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 5px #ddd;
+    bottom: unset;
+    top: 100%;
+    margin-top: 2px;
+    padding: 5px 10px;
+  }
+  .titlebar ul li.checked li {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    margin: 5px;
+    cursor: pointer;
+  }
+  .titlebar ul li.checked li.pen[color='red'] {
+    background-color: red;
+  }
+  .titlebar ul li.checked li.pen[color='orange'] {
+    background-color: orange;
+  }
+  .titlebar ul li.checked li.pen[color='yellow'] {
+    background-color: yellow;
+  }
+  .titlebar ul li.checked li.pen[color='green'] {
+    background-color: green;
+  }
+  .titlebar ul li.checked li.pen[color='blue'] {
+    background-color: blue;
+  }
+  .titlebar ul li.checked li.pen[color='darkblue'] {
+    background-color: darkblue;
+  }
+  .titlebar ul li.checked li.pen[color='purple'] {
+    background-color: purple;
+  }
+  .titlebar ul li.checked li.erase {
+    background: url(eraser.png);
+    background-size: 30px;
+  }
+  .titlebar ul li.checked li.active::after {
+    background-image: url(https://cdn-icons-png.flaticon.com/128/463/463574.png);
+    background-size: 16px;
+    width: 16px;
+    height: 16px;
+    display: block;
+    content: ' ';
+    margin-left: 20px;
+    margin-top: 20px;
+  }
+  textarea#editor {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 180px;
+    height: 240px;
+    background: lightyellow;
+    border-color: #ddd;
+    font-size: 12px;
+    line-height: 12px;
+    outline: 0;
+    resize: none;
+  }
+  span.btn-upload .fileUploader, span.btn-upload .fileContainer {
+    display: inline;
+    position: unset;
+  }
+  span.btn-upload {
+    position: relative;
+  }
+  span.btn-upload .fileContainer .chooseFileButton {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    top: 0;
+    left: 0;
+    margin: 0;
+    right: 0;
+    bottom: 0;
+    background: transparent;
+  }
+  .fileContainer input {
+    width:0px;
+  }
+  .login-form {
+    width: 400px;
+    height: 200px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-shadow: 0 0 5px #ddd;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+  }
+  .login-form h3 {
+    padding: 10px 50px;
+    margin: 0px;
+    border-bottom: 1px solid #ddd;
+    background: url(https://photos.angel.co/startups/i/6539749-eda8798c35450fd82039d3782835d183-medium_jpg.jpg?buster=1608163756) no-repeat 10px center;
+    background-size: 30px;
+  }
+  .login-form label {
+    position: absolute;
+    top: 60px;
+    left: 20px;
+  }
+  .login-form input {
+    position: absolute;
+    top: 90px;
+    left: 20px;
+    border-radius: 4px;
+    width: 338px;
+    outline: 0;
+    border: 1px solid #ddd;
+    border-width: 1px;
+    padding: 10px;
+    margin: 0;
+  }
+  .login-form button {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    width: 360px;
+    height: 40px;
+    right: 20px;
+    background: #eee;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    outline: none;
+  }
+  .login-form button:hover {
+    background: rgb(14, 139, 255);
+    border-color:rgb(14, 139, 255);
+    color: white;
+  }
+  #users {
+    position: fixed;
+    width:100%;
+    height:100%;
+    left:0;
+    top:0;
+    background: rgba(0,0,0,0.5);
+    z-index: 9;
+    display: none;
+  }
+  .users-form {
+    width: 300px;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    /* box-shadow: 0 0 5px #ddd; */
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+  }
+  .users-form h3 {
+    padding: 10px 50px;
+    margin: 0px;
+    border-bottom: 1px solid #ddd;
+    background: url(https://photos.angel.co/startups/i/6539749-eda8798c35450fd82039d3782835d183-medium_jpg.jpg?buster=1608163756) no-repeat 10px center;
+    background-size: 30px;
+  }
+  .users-form h3 button {
+    position: absolute;
+    top: 2px;
+    background: transparent;
+    border: none;
+    font-size: 1.5em;
+    left: 260px;
+    width: auto;
+    color: #ddd;
+  }
+  .users-form button {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    width: 260px;
+    height: 40px;
+    right: 20px;
+    background: #eee;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    outline: none;
+  }
+  .users-form > div {
+    list-style: none;
+    overflow-y: auto;
+    max-height: 300px;
+    min-height: 200px;
+    padding: 20px;
+  }
+  .users-form > div div {
+    padding: 5px;
+  }
+  .users-form > div div.active {
+    background: rgb(14, 139, 255);
+    color: white;
+  }
+  .users-form > div div:hover {
+    background-color: rgb(14, 139, 255);
+    color:white;
+  }
+  .users-form button:hover {
+    background: rgb(14, 139, 255);
+    border-color:rgb(14, 139, 255);
+    color: white;
+  }
+  .users-form h3 button:hover {
+    background: transparent;
+    color: red;
+  }
+</style>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>react-konva demo</title>
+
+</head>
+
+<body>
+  <div id="root"></div>
+</body>
+
+</html>
