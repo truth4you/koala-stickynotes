@@ -607,10 +607,16 @@ class App extends Component {
         {loginedEmail == null ? (
           <div className="login-form">
             <h3>Login Form</h3>
-            <label>Email</label>
+            <label>Email or Nick Name</label>
             <input
               ref={(el) => {
                 this.inputEmail = el
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  loginedEmail = this.inputEmail.value
+                  this.handleLogin()
+                }
               }}
             />
             <button

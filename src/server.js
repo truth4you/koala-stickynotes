@@ -4,8 +4,7 @@ const app = express()
 const server = require('http').createServer(app)
 const io = require('socket.io')(server, {
   cors: {
-    origin: 'http://192.168.107.91:3000',
-    methods: ['GET', 'POST'],
+    origin: '*',
   },
 })
 const multer = require('multer')
